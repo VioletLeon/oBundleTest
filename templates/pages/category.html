@@ -17,8 +17,29 @@ components/common/responsive-img image=category.image
 fallback_size=theme_settings.zoom_size lazyload=theme_settings.lazyload_mode
 class="category-header-image" }} {{/if}} {{#unless
 theme_settings.hide_category_page_heading }}
+
 <h1 class="page-heading">{{category.name}}</h1>
 {{{region name="category_below_header"}}} {{/unless}} {{{category.description}}}
+{{#if customer.name}}
+<div
+  style="
+    display: flex;
+    color: white;
+    background-color: black;
+    width: 98.8vw;
+    position: relative;
+    left: -1.8%;
+    overflow: hidden;
+    margin-bottom: 5%;
+    height: 100px;
+    align-items: center;
+  "
+>
+  Name: {{customer.name}} <br />
+  Phone #: {{customer.phone}} <br />
+  E-mail: {{customer.email}} <br />
+</div>
+{{/if}}
 <div class="page">
   {{#if category.faceted_search_enabled}}
   <aside class="page-sidebar" id="faceted-search-container">

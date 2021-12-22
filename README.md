@@ -1,8 +1,10 @@
 ## Website
 
-WebsiteURL: [https://obundletest8.mybigcommerce.com/](https://obundletest8.mybigcommerce.com/?showStore=yes&ctk=8a9bc7ee-9072-4a93-a10e-df431bc8521f)
-Preview Code: l7ouk6c6qn
-
+WebsiteURL: [https://obundletest8.mybigcommerce.com/](https://obundletest8.mybigcommerce.com/?showStore=yes&ctk=8a9bc7ee-9072-4a93-a10e-df431bc8521f) <br/>
+Preview Code: l7ouk6c6qn <br /> 
+Dummy Account Info: </br>
+- E-mail: oBundle@oBundle.com 
+- Password: password12
 
 ## Task - COMPLETED
 

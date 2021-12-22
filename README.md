@@ -1,3 +1,9 @@
+## Website
+
+WebsiteURL: [https://obundletest8.mybigcommerce.com/](https://obundletest8.mybigcommerce.com/?showStore=yes&ctk=8a9bc7ee-9072-4a93-a10e-df431bc8521f)
+Preview Code: l7ouk6c6qn
+
+
 ## Task
 
 Create a product called Special Item which will be assigned to a new category called Special Items. Be sure to add at least 2 images during the product creation

@@ -1,3 +1,5 @@
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+
 <article
     class="card
     {{#if alternate}} card--alternate{{/if}}"
@@ -65,16 +67,21 @@
            aria-label="{{> components/products/product-info}}"
            {{#if settings.data_tag_enabled}} data-event-type="product-click" {{/if}}
         >
-            <div class="card-img-container">
-                {{> components/common/responsive-img
-                    image=image
-                    class="card-image"
-                    fallback_size=theme_settings.productgallery_size
-                    lazyload=theme_settings.lazyload_mode
-                    default_image=theme_settings.default_image_product
-                }}
-            </div>
+
+        <div class="card-img-container">
+            <img class="card-image lazyload"
+            data-sizes="auto"
+            src="{{cdn 'img/loading.svg'}}"
+            alt="{{image.alt}}"
+            title="{{image.alt}}"
+            data-src="{{getImage image}}"
+            data-hoverimage="{{#replace '{:size}' images.1.data}}500x659{{/replace}}{{getImage images.1.data 'productgallery_size' (cdn theme_settings.default_image_product)}}">
+        </div>
         </a>
+
+        <!-- //https://images.unsplash.com/photo-1640112764819-f687bce4562d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1615&q=80
+        // {{getImage image}} -->
+
 
         <figcaption class="card-figcaption">
             <div class="card-figcaption-body">
@@ -142,3 +149,20 @@
         {{> components/products/bulk-discount-rates}}
     </div>
 </article>
+
+
+<script>
+    $('card-figure').hover(
+        	function() {
+              var image = $(this).find('.card-image');
+              var newImg = image.attr('data-hoverimage');
+              var currentImg = image.attr('src');
+        		if (newImg && newImg != '') image.attr('src', newImg);
+           }, function() {
+              var image = $(this).find('.card-image');
+              var newImg = image.attr('data-src');
+              var currentImg = image.attr('src');
+        		if (newImg && newImg != '') image.attr('src', newImg);
+        	}
+        );
+</script>

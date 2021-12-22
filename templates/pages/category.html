@@ -36,15 +36,21 @@ theme_settings.hide_category_page_heading }}
   {{/if}} {{/if}}
 
   <div class="page-content" id="product-listing-container">
-    <div className="buttonsContainer">
+    <div
+      className="buttonsContainer"
+      style="display: flex; justify-content: center; text-align: center"
+    >
       <a href="#" data-reveal-id="addAllModal"
-        ><button type="button" id="addAllToCart">Add All to Cart</button></a
+        ><button type="button" class="button" id="addAllToCart">
+          Add All to Cart
+        </button></a
       >
 
       <a href="#" data-reveal-id="removeAllModal"
         ><button
+          class="button"
           type="button"
-          style="visibility: hidden"
+          style="display: none; margin-left: 20px"
           id="removeAllFromCart"
         >
           Remove All Items
@@ -57,7 +63,7 @@ theme_settings.hide_category_page_heading }}
 
     <div
       id="addAllModal"
-      class="modal"
+      class="modal modalSmall"
       data-reveal
       data-prevent-quick-search-close
     >
@@ -69,15 +75,22 @@ theme_settings.hide_category_page_heading }}
       >
         <span aria-hidden="true">×</span>
       </a>
-      <div class="modal-content">
-        All products have been added to your cart!
+      <div class="modal-content smallContent">
+        <p style="position: relative; margin-top: 25%; text-align: center">
+          All products have been added to your cart!
+          <a href="/cart.php"
+            ><button style="margin-top: 10%" class="button">
+              Go to your cart
+            </button></a
+          >
+        </p>
       </div>
       <div class="loadingOverlay"></div>
     </div>
 
     <div
       id="removeAllModal"
-      class="modal"
+      class="modal modalSmall"
       data-reveal
       data-prevent-quick-search-close
     >
@@ -89,8 +102,10 @@ theme_settings.hide_category_page_heading }}
       >
         <span aria-hidden="true">×</span>
       </a>
-      <div class="modal-content">
-        All products have been removed from your cart!
+      <div class="modal-content smallContent">
+        <p style="position: relative; margin-top: 33%; text-align: center">
+          All products have been removed from your cart!
+        </p>
       </div>
       <div class="loadingOverlay"></div>
     </div>
@@ -102,7 +117,7 @@ theme_settings.hide_category_page_heading }}
 <script>
   function cartVisibility(string) {
     let removeAllfromCartButton = document.getElementById('removeAllFromCart');
-    removeAllfromCartButton.style.visibility = string;
+    removeAllfromCartButton.style.display = string;
   }
 
   // Remove All Items Button Visibility
@@ -115,7 +130,7 @@ theme_settings.hide_category_page_heading }}
         var insideData = xhr.responseText;
         var jsonResponse = JSON.parse(insideData);
         if (jsonResponse[0] !== undefined) {
-          cartVisibility('visible');
+          cartVisibility('inline');
           return jsonResponse[0];
         }
       }
@@ -147,7 +162,7 @@ theme_settings.hide_category_page_heading }}
         });
     });
 
-    cartVisibility('visible');
+    cartVisibility('inline');
   });
 
   // Remove All From Cart
@@ -184,6 +199,6 @@ theme_settings.hide_category_page_heading }}
     xhr.open('GET', 'http://localhost:3000/api/storefront/carts');
     xhr.send();
 
-    cartVisibility('hidden');
+    cartVisibility('none');
   });
 </script>

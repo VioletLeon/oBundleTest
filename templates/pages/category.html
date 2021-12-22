@@ -36,32 +36,154 @@ theme_settings.hide_category_page_heading }}
   {{/if}} {{/if}}
 
   <div class="page-content" id="product-listing-container">
-    <button type="button" id="addAllToCart">Add All to Cart</button>
+    <div className="buttonsContainer">
+      <a href="#" data-reveal-id="addAllModal"
+        ><button type="button" id="addAllToCart">Add All to Cart</button></a
+      >
+
+      <a href="#" data-reveal-id="removeAllModal"
+        ><button
+          type="button"
+          style="visibility: hidden"
+          id="removeAllFromCart"
+        >
+          Remove All Items
+        </button></a
+      >
+    </div>
 
     {{> components/category/product-listing}} {{{region
     name="category_below_content"}}}
+
+    <div
+      id="addAllModal"
+      class="modal"
+      data-reveal
+      data-prevent-quick-search-close
+    >
+      <a
+        href="#"
+        class="modal-close"
+        aria-label="{{lang 'common.close'}}"
+        role="button"
+      >
+        <span aria-hidden="true">×</span>
+      </a>
+      <div class="modal-content">
+        All products have been added to your cart!
+      </div>
+      <div class="loadingOverlay"></div>
+    </div>
+
+    <div
+      id="removeAllModal"
+      class="modal"
+      data-reveal
+      data-prevent-quick-search-close
+    >
+      <a
+        href="#"
+        class="modal-close"
+        aria-label="{{lang 'common.close'}}"
+        role="button"
+      >
+        <span aria-hidden="true">×</span>
+      </a>
+      <div class="modal-content">
+        All products have been removed from your cart!
+      </div>
+      <div class="loadingOverlay"></div>
+    </div>
   </div>
 </div>
 
 {{/partial}} {{> layout/base}}
 
 <script>
-  let productIdArray = [];
+  function cartVisibility(string) {
+    let removeAllfromCartButton = document.getElementById('removeAllFromCart');
+    removeAllfromCartButton.style.visibility = string;
+  }
 
+  // Remove All Items Button Visibility
+  async function checkCart() {
+    var data = null;
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    await xhr.addEventListener('readystatechange', function () {
+      if (this.readyState === this.DONE) {
+        var insideData = xhr.responseText;
+        var jsonResponse = JSON.parse(insideData);
+        if (jsonResponse[0] !== undefined) {
+          cartVisibility('visible');
+          return jsonResponse[0];
+        }
+      }
+    });
+    xhr.open('GET', 'http://localhost:3000/api/storefront/carts');
+    xhr.send(data);
+  }
+
+  checkCart();
+
+  //Button to add all products to cart script
   // getAllProductsOnPage
+  let productIdArray = [];
   $('.card').map(function () {
     productIdArray.push(this.dataset.test.slice(5));
-  }); // Return a weird object? Will look into later, for now values being pushed into productIdArray
+  }); // Returns a weird object? Will look into later, for now values being pushed into productIdArray
 
-  console.log(productIdArray);
   // when #addToCart is clicked...
   $('button#addAllToCart').click(function () {
     productIdArray.forEach((productId) => {
-      return $.get(`/cart.php?action=add&product_id=${productId}`).done(
-        function (data, status, xhr) {
+      return $.get(`/cart.php?action=add&product_id=${productId}`)
+        .done(function (data, status, xhr) {
           console.log('first item complete with status ' + status);
-        }
-      );
+        })
+        .fail(function (xhr, status, error) {
+          console.log('oh noes, error with status ' + status + ' and error: ');
+          console.error(error);
+          return xhr.done();
+        });
     });
+
+    cartVisibility('visible');
+  });
+
+  // Remove All From Cart
+  $('button#removeAllFromCart').click(async function () {
+    var data = null;
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    await xhr.addEventListener('readystatechange', function () {
+      if (this.readyState === this.DONE) {
+        var insideData = xhr.responseText;
+        var jsonResponse = JSON.parse(insideData);
+        if (jsonResponse[0] !== undefined) {
+          console.log(jsonResponse[0].id);
+
+          var deletexhr = new XMLHttpRequest();
+          deletexhr.withCredentials = true;
+
+          deletexhr.addEventListener('readystatechange', function () {
+            if (this.readyState === this.DONE) {
+              let removeAllfromCartButton =
+                document.getElementById('removeAllFromCart');
+              removeAllfromCartButton.style.visibility = 'hidden';
+            }
+          });
+
+          deletexhr.open(
+            'DELETE',
+            `http://localhost:3000/api/storefront/carts/${jsonResponse[0].id}`
+          );
+          deletexhr.send();
+        }
+      }
+    });
+    xhr.open('GET', 'http://localhost:3000/api/storefront/carts');
+    xhr.send();
+
+    cartVisibility('hidden');
   });
 </script>

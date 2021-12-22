@@ -46,20 +46,22 @@ theme_settings.hide_category_page_heading }}
 {{/partial}} {{> layout/base}}
 
 <script>
-  var allProductsOnPage = [];
+  let productIdArray = [];
 
   // getAllProductsOnPage
+  $('.card').map(function () {
+    productIdArray.push(this.dataset.test.slice(5));
+  }); // Return a weird object? Will look into later, for now values being pushed into productIdArray
 
+  console.log(productIdArray);
   // when #addToCart is clicked...
   $('button#addAllToCart').click(function () {
-    // add product id 123
-    return $.get('/cart.php?action=add&product_id=112')
-      .done(function (data, status, xhr) {
-        console.log('first item complete with status ' + status);
-      })
-      .always(function () {
-        // go to cart
-        return (window.location = '/cart.php');
-      });
+    productIdArray.forEach((productId) => {
+      return $.get(`/cart.php?action=add&product_id=${productId}`).done(
+        function (data, status, xhr) {
+          console.log('first item complete with status ' + status);
+        }
+      );
+    });
   });
 </script>

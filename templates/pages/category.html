@@ -20,7 +20,7 @@ theme_settings.hide_category_page_heading }}
 <h1 class="page-heading">{{category.name}}</h1>
 {{{region name="category_below_header"}}} {{/unless}} {{{category.description}}}
 <div class="page">
-  {{customer.address1}} {{#if category.faceted_search_enabled}}
+  {{#if category.faceted_search_enabled}}
   <aside class="page-sidebar" id="faceted-search-container">
     {{> components/category/sidebar}}
   </aside>
@@ -36,9 +36,30 @@ theme_settings.hide_category_page_heading }}
   {{/if}} {{/if}}
 
   <div class="page-content" id="product-listing-container">
+    <button type="button" id="addAllToCart">Add All to Cart</button>
+
     {{> components/category/product-listing}} {{{region
     name="category_below_content"}}}
   </div>
 </div>
 
 {{/partial}} {{> layout/base}}
+
+<script>
+  var allProductsOnPage = [];
+
+  // getAllProductsOnPage
+
+  // when #addToCart is clicked...
+  $('button#addAllToCart').click(function () {
+    // add product id 123
+    return $.get('/cart.php?action=add&product_id=112')
+      .done(function (data, status, xhr) {
+        console.log('first item complete with status ' + status);
+      })
+      .always(function () {
+        // go to cart
+        return (window.location = '/cart.php');
+      });
+  });
+</script>

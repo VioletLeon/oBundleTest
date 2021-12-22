@@ -4,7 +4,7 @@ WebsiteURL: [https://obundletest8.mybigcommerce.com/](https://obundletest8.mybig
 Preview Code: l7ouk6c6qn
 
 
-## Task
+## Task - COMPLETED
 
 Create a product called Special Item which will be assigned to a new category called Special Items. Be sure to add at least 2 images during the product creation
 
@@ -13,6 +13,6 @@ Add a button at the top of the category page labeled Add All To Cart. When click
 If the cart has an item in it - show a button next to the Add All To Cart button which says Remove All Items. When clicked it should clear the cart and notify the user.
 Both buttons should utilize the Storefront API for completion.
 
-## Bonus
+## Bonus - COMPLETED
 
 If a customer is logged in - at the top of the category page show a banner that shows some customer details (i.e. name, email, phone, etc). This should utilize the data that is rendered via Handlebars on the Customer Object.

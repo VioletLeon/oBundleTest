@@ -6,7 +6,9 @@
   "author": "BigCommerce",
   "license": "MIT",
   "dependencies": {
+    "@apollo/client": "^3.5.6",
     "@bigcommerce/stencil-utils": "^6.8.1",
+    "axios": "^0.24.0",
     "core-js": "^3.9.0",
     "creditcards": "^3.0.1",
     "easyzoom": "^2.5.3",
@@ -14,6 +16,7 @@
     "focus-within-polyfill": "^5.1.0",
     "formdata-polyfill": "^3.0.20",
     "foundation-sites": "^5.5.3",
+    "graphql": "^16.2.0",
     "jquery": "^3.5.1",
     "jstree": "^3.3.12",
     "lazysizes": "5.2.2",

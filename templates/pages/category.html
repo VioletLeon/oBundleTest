@@ -95,7 +95,23 @@ theme_settings.hide_category_page_heading }}
       >
         <span aria-hidden="true">×</span>
       </a>
-      <div class="modal-content smallContent">
+      <div
+        class="modal-content smallContent"
+        id="loading"
+        style="display: none"
+      >
+        <p
+          style="
+            position: relative;
+            margin-top: 25%;
+            text-align: center;
+            align-items: center;
+          "
+        >
+          Loading...
+        </p>
+      </div>
+      <div class="modal-content smallContent" id="modalContent">
         <p
           style="
             position: relative;
@@ -112,7 +128,7 @@ theme_settings.hide_category_page_heading }}
           >
         </p>
       </div>
-      <div class="loadingOverlay"></div>
+      <div class="loadingOverlay" style="visibility: hidden"></div>
     </div>
 
     <div
@@ -142,6 +158,28 @@ theme_settings.hide_category_page_heading }}
 {{/partial}} {{> layout/base}}
 
 <script>
+  // Hover Effect for Special Item
+
+  $('.card-figure').hover(
+    function () {
+      if (this.parentElement.dataset.test == 'card-112') {
+        var image = $(this).find('.card-image');
+        var newImg = image.attr('data-hoverimage');
+        var currentImg = image.attr('src');
+        if (newImg && newImg != '') image.attr('src', newImg);
+      }
+    },
+    function () {
+      if (this.parentElement.dataset.test == 'card-112') {
+        var image = $(this).find('.card-image');
+        var newImg = image.attr('data-src');
+        var currentImg = image.attr('src');
+        if (newImg && newImg != '') image.attr('src', newImg);
+      }
+    }
+  );
+
+  // Button Visiblity for Remove All
   function cartVisibility(string) {
     let removeAllfromCartButton = document.getElementById('removeAllFromCart');
     removeAllfromCartButton.style.display = string;
@@ -162,7 +200,7 @@ theme_settings.hide_category_page_heading }}
         }
       }
     });
-    xhr.open('GET', 'http://localhost:3000/api/storefront/carts');
+    xhr.open('GET', '/api/storefront/carts');
     xhr.send(data);
   }
 
@@ -176,22 +214,24 @@ theme_settings.hide_category_page_heading }}
   }); // Returns a weird object? Will look into later, for now values being pushed into productIdArray
 
   // when #addToCart is clicked...
-  $('button#addAllToCart').click(function () {
-    productIdArray.forEach((productId) => {
-      return $.get(`/cart.php?action=add&product_id=${productId}`)
-        .done(function (data, status, xhr) {
-          console.log('first item complete with status ' + status);
-        })
-        .fail(function (xhr, status, error) {
-          console.log('oh noes, error with status ' + status + ' and error: ');
-          console.error(error);
-          return xhr.done();
-        });
-    });
-
+  $('button#addAllToCart').click(async function () {
     cartVisibility('inline');
-  });
 
+    let content = document.getElementById('modalContent');
+    let loading = document.getElementById('loading');
+
+    content.style.display = 'none';
+    loading.style.display = 'inline';
+
+    for (let index = 0; index < productIdArray.length; index++) {
+      console.log(index, productIdArray[index]);
+      await $.get(`/cart.php?action=add&product_id=${productIdArray[index]}`);
+      console.log('Cart item pushed to cart');
+    }
+
+    content.style.display = 'inline';
+    loading.style.display = 'none';
+  });
   // Remove All From Cart
   $('button#removeAllFromCart').click(async function () {
     var data = null;
@@ -217,13 +257,13 @@ theme_settings.hide_category_page_heading }}
 
           deletexhr.open(
             'DELETE',
-            `http://localhost:3000/api/storefront/carts/${jsonResponse[0].id}`
+            `/api/storefront/carts/${jsonResponse[0].id}`
           );
           deletexhr.send();
         }
       }
     });
-    xhr.open('GET', 'http://localhost:3000/api/storefront/carts');
+    xhr.open('GET', '/api/storefront/carts');
     xhr.send();
 
     cartVisibility('none');
